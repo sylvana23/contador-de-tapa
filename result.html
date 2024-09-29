@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>RELATÓRIO</h1>
+        <p id="totalClicks"></p>
+        <p id="timeIntervals"></p>
+    </div>
+
+    <script>
+        // Obtém os dados do localStorage
+        const totalClicks = localStorage.getItem('clickCount') || 0;
+        const clickTimes = JSON.parse(localStorage.getItem('clickTimes')) || [];
+
+        // Exibe o total de cliques
+        document.getElementById('totalClicks').textContent = `Total clicks: ${totalClicks}`;
+
+        // Calcula os intervalos de tempo entre os cliques em minutos e segundos
+        let intervals = "";
+        for (let i = 1; i < clickTimes.length; i++) {
+            const previousClick = new Date(clickTimes[i - 1]);
+            const currentClick = new Date(clickTimes[i]);
+
+            // Calcula a diferença em milissegundos
+            const intervalInMilliseconds = currentClick - previousClick;
+
+            // Converte para minutos e segundos
+            const intervalInMinutes = Math.floor(intervalInMilliseconds / (1000 * 60)); // Minutos inteiros
+            const intervalInSeconds = ((intervalInMilliseconds % (1000 * 60)) / 1000).toFixed(0); // Segundos restantes
+
+            intervals += `Intervalo entre o tapa ${i} e o tapa  ${i + 1}: ${intervalInMinutes}m ${intervalInSeconds} s<br>`;
+        }
+
+        // Exibe os intervalos calculados
+        document.getElementById('timeIntervals').innerHTML = intervals;
+    </script>
+</body>
+</html>
